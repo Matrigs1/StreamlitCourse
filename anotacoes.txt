@@ -1,0 +1,9 @@
+Streamlit é uma biblioteca para criação rápida de dashboards, templates etc.
+Muito utilizada na área de ciência de dados, para exibir gráficos e métricas.
+
+Elementos: 
+st.title('titulo') # Exibe um título grande na tela.
+
+st.metric() # Recebe nome e dados para a métrica. Possível customizar.
+st.dataframe() # Recebe e mostra um DataFrame na tela.
+
