@@ -15,10 +15,28 @@ def formata_numero(valor: float, prefixo = ''):
 st.title('Dashboard de vendas :shopping_trolley:')
 
 url = 'https://labdados.com/produtos'
+regioes = ['Brasil', 'Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul']
 
-response = re.get(url).json()
+st.sidebar.title('Filtros')
+regiao = st.sidebar.selectbox('Região', regioes)
+
+if regiao == 'Brasil':
+    regiao = ''
+    
+todos_anos = st.sidebar.checkbox('Dados de todo o período', value=True)
+if todos_anos:
+    ano = ''
+else:
+    ano = st.sidebar.slider('Ano', 2020, 2023)
+
+query_string = {'regiao': regiao.lower(), 'ano': ano}
+response = re.get(url, params=query_string).json()
 dados = pd.DataFrame.from_dict(response)
 dados['Data da Compra'] = pd.to_datetime(dados['Data da Compra'], format='%d/%m/%Y')
+
+filtro_vendedores = st.sidebar.multiselect('Vendedores', dados['Vendedor'].unique())
+if filtro_vendedores:
+    dados = dados[dados['Vendedor'].isin(filtro_vendedores)]
 
 ## Tabelas
 ### Tabelas de receita
